@@ -47,6 +47,26 @@ import com.sun.jersey.spi.resource.Singleton;
 @Path("RDF")
 @Singleton
 public class RDFResource {
+	
+	
+	/**
+	 * Method for parsing REST request
+	 * 
+	 * @param Username
+	 * @param Path
+	 * 
+	 * @return The list of ContentBeans to set in the response
+	 */
+	@GET
+	@XmlElement(name = "contentbean")
+	@Path("/deleteURI")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void delete(@QueryParam("username") String Username, @QueryParam("path") String Path) {
+	    
+		deleteFile(Path);
+		
+		
+	}
 		 
 	/**
 	 * Method for parsing REST request
@@ -270,10 +290,10 @@ public class RDFResource {
 		return jsonS;
 	}
 	
-	public void deleteFile(String fileToDelete){
+	public void deleteFile(String uriToDelete){
 		UpdateRequest request = UpdateFactory.create();
-		request.add("DELETE {<" + fileToDelete + "> ?p ?o} WHERE {SELECT ?p ?o WHERE{<" + fileToDelete + "> ?p ?o}}");
-		request.add("DELETE {?s ?p <" + fileToDelete + ">} WHERE {SELECT ?s ?p ?o WHERE{?s ?p <" + fileToDelete + ">}}");
+		request.add("DELETE {<" + uriToDelete + "> ?p ?o} WHERE {SELECT ?p ?o WHERE{<" + uriToDelete + "> ?p ?o}}");
+		request.add("DELETE {?s ?p <" + uriToDelete + ">} WHERE {SELECT ?s ?p ?o WHERE{?s ?p <" + uriToDelete + ">}}");
 		UpdateProcessor processor = UpdateExecutionFactory.createRemote(request, "http://localhost:3030/ds/update");
 		processor.execute();
 	}
