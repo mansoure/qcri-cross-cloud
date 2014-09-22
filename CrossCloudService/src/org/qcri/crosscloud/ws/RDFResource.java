@@ -52,18 +52,17 @@ public class RDFResource {
 	/**
 	 * Method for parsing REST request
 	 * 
-	 * @param Username
 	 * @param Path
 	 * 
-	 * @return The list of ContentBeans to set in the response
+	 * @delete The list of ContentBeans to set in the response
 	 */
 	@GET
 	@XmlElement(name = "contentbean")
-	@Path("/deleteURI")
+	@Path("/delete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public void delete(@QueryParam("username") String Username, @QueryParam("path") String Path) {
+	public void delete(@QueryParam("path") String Path) {
 	    
-		deleteFile(Path);
+		deleteURI(Path);
 		
 		
 	}
@@ -290,7 +289,7 @@ public class RDFResource {
 		return jsonS;
 	}
 	
-	public void deleteFile(String uriToDelete){
+	public void deleteURI(String uriToDelete){
 		UpdateRequest request = UpdateFactory.create();
 		request.add("DELETE {<" + uriToDelete + "> ?p ?o} WHERE {SELECT ?p ?o WHERE{<" + uriToDelete + "> ?p ?o}}");
 		request.add("DELETE {?s ?p <" + uriToDelete + ">} WHERE {SELECT ?s ?p ?o WHERE{?s ?p <" + uriToDelete + ">}}");
@@ -298,10 +297,10 @@ public class RDFResource {
 		processor.execute();
 	}
 	
-	public void updateFile(String filePath, String updatedFile){
-		deleteFile(filePath);
+	public void updateURI(String filePath, String updatedURI){
+		deleteURI(filePath);
 		UpdateRequest request = UpdateFactory.create();
-		request.add("INSERT DATA {" + updatedFile + "}");
+		request.add("INSERT DATA {" + updatedURI + "}");
 		request.add("INSERT DATA {<" + filePath.substring(0, filePath.lastIndexOf("/")+1)+ "> <http://www.w3.org/ns/ldp#contains> <" + filePath + ">}");
 		UpdateProcessor processor = UpdateExecutionFactory.createRemote(request, "http://localhost:3030/ds/update");
 		processor.execute();
