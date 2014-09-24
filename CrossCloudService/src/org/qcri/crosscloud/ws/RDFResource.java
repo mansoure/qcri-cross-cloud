@@ -140,7 +140,7 @@ public class RDFResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String retrieve(@QueryParam("username") String Username, @QueryParam("path") String Path) {
 	    
-		Username = "http://" + Username + ".ldm.io/" ;
+		Username = "http://" + Username + ".rww.io/" ;
 		ArrayList<ContentBean> lContentBeans = getAnswers(Username, Path);
     
 	/*//	
@@ -191,7 +191,12 @@ public class RDFResource {
 				else
 					{
 					aB.setType(true);
-					aB.setSize(40);
+					System.out.println("Retrieving size of: " + x.toString());
+					ResultSet rdfResults = qManager.getAllTriples(x.toString());
+					System.out.println("Getting RDF File");
+					String rdfFile = getRDFFile(sPath, rdfResults);
+					System.out.println("Done getting file");
+					aB.setSize(rdfFile.length());
 					}
 				
 				aB.setLastModified(new Date());
@@ -211,15 +216,7 @@ public class RDFResource {
 			}
 		}
 		else{
-			String rdfFile = "";
-			while(results.hasNext()){				
-				rdfFile += "<" + sPath + "> ";
-				QuerySolution soln = results.nextSolution();
-				RDFNode x = soln.get("p");
-				rdfFile += "<" + x.toString() + "> ";
-				x = soln.get("o");
-				rdfFile += "<" + x.toString() + ">.\n";
-			}
+			String rdfFile = getRDFFile(sPath, results);
 			System.out.println("RDF File returned:\n" + rdfFile);
 			// Fill AttributeBean
 			AttributesBean aB = new AttributesBean();
@@ -243,6 +240,19 @@ public class RDFResource {
 	    return contentBeans;
 	}
 
+	private static String getRDFFile(String file, ResultSet results){
+		String rdfFile = "";
+		while(results.hasNext()){				
+			rdfFile += "<" + file + "> ";
+			QuerySolution soln = results.nextSolution();
+			RDFNode x = soln.get("p");
+			rdfFile += "<" + x.toString() + "> ";
+			x = soln.get("o");
+			rdfFile += "<" + x.toString() + ">.\n";
+		}
+		return rdfFile;
+	}
+	
 	/**
 	 * Method for hardcoding a retrieval of an element from the source
 	 * 
@@ -319,7 +329,6 @@ public class RDFResource {
 	
 	public void updateURI(String URI, String Content){
 		deleteURI(URI);
-		//UpdateExecutionFactory.createRemote()
 		UpdateRequest request = UpdateFactory.create();
 		request.add("INSERT DATA {" + Content + "}");
 		request.add("INSERT DATA {<" + URI.substring(0, URI.lastIndexOf("/")+1)+ "> <http://www.w3.org/ns/ldp#contains> <" + Content + ">}");
@@ -331,7 +340,7 @@ public class RDFResource {
 	{
 		boolean valid = false;
 		if ( (username.equals("essam")&& password.equals("essam")) ||
-			 (username.equals("ahmed")&& password.equals("ahmed")) ||
+			 (username.equals("ahmedelroby")&& password.equals("ahmedelroby")) ||
 			 (username.equals("maged")&& password.equals("maged"))
 			)
 			valid = true;
