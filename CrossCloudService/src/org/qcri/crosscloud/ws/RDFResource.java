@@ -191,11 +191,8 @@ public class RDFResource {
 				else
 					{
 					aB.setType(true);
-					System.out.println("Retrieving size of: " + x.toString());
 					ResultSet rdfResults = qManager.getAllTriples(x.toString());
-					System.out.println("Getting RDF File");
 					String rdfFile = getRDFFile(sPath, rdfResults);
-					System.out.println("Done getting file");
 					aB.setSize(rdfFile.length());
 					}
 				
