@@ -32,10 +32,6 @@
 		// Onload function
 		$(document).ready(function() {
 			  window.oncontextmenu = function() { return false; }
-			  //jQuery.support.cors = true;
-			  $(function() {
-				
-			});
 			
 		});
 	</script>
@@ -149,9 +145,10 @@
 		// The function to render the content the first time after login
 		function renderContentLogin()
 		{
+			
 			document.getElementById('pannel').innerHTML="";
 			
-			var itemText = "";
+			var itemText = "<p style='color: #757561;font-weight: bold;'>" + removeHttp(extractCurrentPath(arrayContentBeans[0].attributes.name)) + "</p>";
 				itemText += "<table width='100%;' style='vertical-align:top; background: none repeat scroll 0 0 #ffffff; border: 0px solid #72CE9B;' cellspacing='0px'>";
 				itemText += "<tr bgcolor='#757561'>";
 				itemText += "<td class='expfirst' align='left' width='800px' height='40px'>Name</td>";
@@ -187,14 +184,21 @@
 					var sDate = buildStringFromDate(new Date(oContentBean.attributes.lastModified));
 										
 					itemText += "<tr class='border_bottom'>";
-					itemText += "<td align='left' width='800px' height='40px'>" + "<a href='#' onclick='javascript:loadContent(\"" + username + "\", \"" + oContentBean.attributes.name + "\");'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					if(oContentBean.attributes.type == false){
+						itemText += "<td align='left' width='800px' height='40px'>" + "<a href='#' onclick='javascript:loadContent(\"" + username + "\", \"" + oContentBean.attributes.name + "\");'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					}else{
+						itemText += "<td align='left' width='800px' height='40px'>" + "<a href='#'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					}
 					itemText += "<td align='left' width='100px' height='40px'>" + sSize + "</td>";
 					itemText += "<td align='left' width='100px' height='40px'>" + sType + "</td>";	
 					itemText += "<td align='left' width='180px' height='40px'>" + sDate + "</td>";
 					
 					//Show ACL only for RDF
 					if(oContentBean.attributes.type == true){
-						itemText += "<td align='left' width='150px' height='40px' valign='bottom'><img src='images/document_text_edit.gif' />&nbsp;<a href='#' onclick='javascript:doDelete(\"" + oContentBean.attributes.name + "\");'><img src='images/document_delete.gif' /></a></td>";			
+						itemText += "<td align='left' width='150px' height='40px' valign='bottom'>";
+						itemText += "	<a href='#' onclick='$('#popupEdit').popup('open');'><img src='images/document_text_edit.gif' /></a>&nbsp";
+						itemText += "	<a href='#' onclick='javascript:doDelete(\"" + oContentBean.attributes.name + "\");'><img src='images/document_delete.gif' /></a>";
+						itemText += "</td>";			
 					}else{
 						itemText += "<td align='left' width='150px' height='40px'></td>";			
 					}
@@ -213,7 +217,7 @@
 		{
 			document.getElementById('pannel').innerHTML="";
 			
-			var itemText = "";
+			var itemText = "<p style='color: #757561;font-weight: bold;'>" + removeHttp(extractCurrentPath(arrayContentBeans[0].attributes.name)) + "</p>";
 				itemText += "<table width='100%;' style='vertical-align:top; background: none repeat scroll 0 0 #ffffff; border: 0px solid #72CE9B;' cellspacing='0px'>";
 				itemText += "<tr bgcolor='#757561'>";
 				itemText += "<td class='expfirst' align='left' width='800px' height='40px'>Name</td>";
@@ -260,14 +264,21 @@
 					}
 										
 					itemText += "<tr class='border_bottom'>";
-					itemText += "<td align='left' width='800px'>" + "<a href='#' onclick='javascript:loadContent(\"" + username + "\", \"" + oContentBean.attributes.name + "\");'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					if(oContentBean.attributes.type == false){
+						itemText += "<td align='left' width='800px' height='40px'>" + "<a href='#' onclick='javascript:loadContent(\"" + username + "\", \"" + oContentBean.attributes.name + "\");'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					}else{
+						itemText += "<td align='left' width='800px' height='40px'>" + "<a href='#'>" + removeAbsolutePath(oContentBean.attributes.name) + "</a></td>";
+					}
 					itemText += "<td align='left' width='100px'>" + sSize + "</td>";
 					itemText += "<td align='left' width='100px'>" + sType + "</td>";	
 					itemText += "<td align='left' width='180px'>" + sDate + "</td>";
 					
 					//Show ACL only for RDF
 					if(oContentBean.attributes.type == true){
-						itemText += "<td align='left' width='150px' height='40px' valign='bottom'><img src='images/document_text_edit.gif' />&nbsp;<a href='#' onclick='javascript:doDelete(\"" + oContentBean.attributes.name + "\");'><img src='images/document_delete.gif' /></a></td>";						
+						itemText += "<td align='left' width='150px' height='40px' valign='bottom'>";
+						itemText += "	<a href='#' onclick='$('#popupEdit').popup('open');'><img src='images/document_text_edit.gif' /></a>&nbsp";
+						itemText += "	<a href='#' onclick='javascript:doDelete(\"" + oContentBean.attributes.name + "\");'><img src='images/document_delete.gif' /></a>";
+						itemText += "</td>";				
 					}else{
 						itemText += "<td align='left' width='150px' height='40px'></td>";			
 					}

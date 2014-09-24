@@ -77,6 +77,13 @@ function extractElement(path){
 	return result;
 }
 
+//Eliminate absolute URL
+function removeHttp(path){
+	var result = "";
+	var parts = path.split("://");
+	result += parts[1];
+	return result;
+}
 
 //Level up
 function levelUp(){

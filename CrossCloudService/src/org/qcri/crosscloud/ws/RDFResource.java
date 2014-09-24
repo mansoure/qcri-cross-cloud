@@ -331,7 +331,7 @@ public class RDFResource {
 	{
 		boolean valid = false;
 		if ( (username.equals("essam")&& password.equals("essam")) ||
-			 (username.equals("ahmedelroby")&& password.equals("ahmedelroby")) ||
+			 (username.equals("ahmed")&& password.equals("ahmed")) ||
 			 (username.equals("maged")&& password.equals("maged"))
 			)
 			valid = true;
